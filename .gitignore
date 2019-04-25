@@ -37,3 +37,7 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/macos,jekyll
+
+# Manually added gitignores
+.bundle
+gems/
