@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Quality of Writing in the Phillipian</title>
+    <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
+    <script src="d3v4+jetpack.js" type="text/javascript"></script>
+    <script src="graph-scroll.js" type="text/javascript"></script>
+    <style>
+        html {
+            height:100%;
+            padding:0px;
+            margin:0px;
+        }
+
+        body {
+            font-family: sans-serif;
+            /*background-color:#cecece;*/
+        }
+
+        #wrapper {
+            padding:20px;
+            background-color:white;
+            width: 60%;
+            margin: 0px auto;
+        }
+
+        header{
+            text-align: center;
+            width:100%;
+        }
+
+        #main-content {
+            width: 80%;
+            margin: 0px auto;
+            background-color:white;
+        }
+
+        svg {
+            border: 1px solid black;
+            display: inline-block;
+        }
+        .svgcontainer {
+            text-align: center;
+            width: 100%;
+        }
+
+        p {
+            font-size: 15pt;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <header>
+            <h1>Quality of Writing in The Phillipian</h1>
+        </header>
+        <div id="main-content">
+            <div>
+                <p>
+                    The following is an analysis of the writing quality of The Phillipian newspaper over time. My data collection process involved scraping the Phillipian's website for over 900 articles from the news section from 2013 and onward.
+                    I then broke up the text into words and examined how articles vary from month to month. The first metric I used to assess quality was to see what percentage of a month's articles were made up of words in the top 100 most common non-stopwords.
+                    This will roughly show the degree of repetitiveness of common words and variety in vocabulary. Higher percents indicate more uniformity and therefore lower quality writing.
+                </p>
+                <p>
+                    The amount of "word distribution" looks pretty consistent over the years, except for the months of June, July, and August, which is summer break. Even in the months of March, November, and December, when school is cut short by break, the percentage stays consistent. In the following graphs, I address this problem by cutting out irrelevant months from the visualization.
+                </p>
+            </div>
+            <div id="container1" class="svgcontainer"></div>
+            <div>
+                <p>
+                    To condense the data into a more meaningful display, I excluded data from the aforementioned months--June, July, August, November, December, and March--to display how the data changes over the course of "full" months (i.e. months where a paper is published every week).
+                    Here is the first visualization, but with only the relevant months included:
+                </p>
+            </div>
+            <div id="container2" class="svgcontainer"></div>
+            <div>
+                <p>
+
+                    Now that the data is much cleaner and noise has been reduced, we see a different picture.
+                    Note the dip below the average from September 2016 and onward, which indicates an overall reduction of quality. The drop is only by a few percentage points, though, so no serious conclusions can likely be drawn from this.
+                    Recall that the "word variance" used here is defined as percentage of the text that is not made up of the most common non-stopwords.
+                </p>
+                <p>
+                    For reference, here is a chart of word count over only the relevant months. Note the dip below the average in the 2017 months.
+                </p>
+            </div>
+            <div id="container3" class="svgcontainer"></div>
+            <div>
+                <p>
+                    The second metric I used to measure writing quality was the percentage of consecutive pairs in each month's articles that are in the 100 most common consecutive word pairs. This roughly measures repetitiveness of two-word structures in the writing. Again, higher is more repetitive.
+                </p>
+            </div>
+            <div id="container4" class="svgcontainer"></div>
+            <div>
+                <p>
+                    The third metric is similar to word distribution: it is the number of unique words divided by the total number of words for each month. Like the other metrics we examined, there seems to be an upward trend in more recent months with word variance as well, however word variance is different in that higher values actually indicate better quality because there are more unique words relative to the total number of words.
+                </p>
+            </div>
+            <div id="container5" class="svgcontainer"></div>
+            <div>
+                <p>
+                    The charts of these metrics all seem to be pretty similar; they all have a roughly inverse relationship with the word count graph.
+                    This actually makes sense, because the fewer words there are, the less variation there will be in the text.
+                </p>
+                <p>
+                    With the next set of visualizations, I will take a look at these metrics on a per-article basis rather than a per-month basis.
+                    This first graph is of the word variance of the first 50 articles that I collected.
+                </p>
+            </div>
+            <div id="container6" class="svgcontainer"></div>
+            <div>
+                <p>
+                    And this is a graph of the last 50 articles.
+                </p>
+                <p>
+                    I did end up having to remove some bad data for this graph. I found and removed a handful of articles that just consisted of these words: <code>['click', 'hereto', 'view', 'week', 'newslett', 'pleasesubscrib']</code>.
+                </p>
+            </div>
+            <div id="container7" class="svgcontainer"></div>
+            <div>
+                <h2>Discussion</h2>
+                <p>
+                    Overall, I did not uncover any significant increase or decrease in quality of writing based on the metrics I used, because they seemed to correlate with the number of words written. It makes sense that the word distribution will decrease if there are less words written, for example.
+                </p>
+                <p>
+                    Following this, I would likely attempt to analyze grammatical constructs as a source of quality of writing, because bad grammar often impacts quality of writing more than words do.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        Array.prototype.contains = function (v) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] === v) return true;
+            }
+            return false;
+        };
+
+        const width = 1000,
+            height= 600,
+            margin = {
+                top: 100,
+                left: 100,
+                right: 100,
+                bottom: 100
+            }
+
+        function avg(nums) {
+            var average = 0;
+            nums.forEach(function (d) { average += +d; });
+            return average / nums.length;
+        }
+
+        function generateBarChart(containerID, csv, labelsCol, dataCol, startIndex, numPoints, color) {
+            var svg = d3.select(containerID)
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+            var range = d3.extent(csv, function (d) { return +d[dataCol]; });
+            var scale = d3.scaleLinear().domain(range).range([height - margin.bottom, margin.top]);
+
+            var availableWidth = width - margin.left - margin.right;
+            var spacePerBar = availableWidth / numPoints;
+            var padding = 3;
+
+            var xval = function (i) {
+                return (spacePerBar * i) + margin.left + padding + ((spacePerBar - (2 * padding)) / 2);
+            };
+
+            var xaxisScale = d3.scaleOrdinal().domain((function (numPoints) {
+                var ret = [];
+                for (var i = startIndex; i < startIndex + numPoints; i++) {
+                    ret.push(csv[i][labelsCol]);
+                }
+                return ret;
+            })(numPoints))
+            .range((function (numPoints) {
+                var ret = [];
+                for (var i = 0; i < numPoints; i++) {
+                    ret.push(xval(i));
+                }
+                return ret;
+            })(numPoints));
+
+            var data = csv.slice(startIndex, startIndex + numPoints);
+
+            // Bind data
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", function (d, i) { return xval(i); })
+                .attr("y", height - margin.bottom)
+                .attr("width", spacePerBar - (2 * padding))
+                .attr("height", 0)
+                .attr("fill", color)
+                .attr("stroke", "white")
+                .attr("fill-opacity", 0.0)
+
+            // Dotted line average
+            var average = avg((function (arr, col) {
+                var ret = [];
+                arr.forEach(function (d) { ret.push(+d[col]); });
+                return ret;
+            })(data, dataCol));
+
+            var avgLineYval = scale(average);
+            svg.append("line")
+                .attr("x1", margin.left)
+                .attr("x2", width - margin.right)
+                .attr("y1", avgLineYval)
+                .attr("y2", avgLineYval)
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke", "red")
+                .attr("stroke-opacity", 0.0)
+                .transition()
+                .delay(500)
+                .duration(250)
+                .attr("stroke-opacity", 1.0);
+
+
+            // Axes
+            var axisLeft = d3.axisLeft(scale);
+
+            svg.append("g")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(axisLeft);
+
+            var axisBottom = d3.axisBottom(xaxisScale);
+
+            svg.append("g")
+                .attr("transform", "translate(0," + (height - margin.bottom) +")")
+                .call(axisBottom)
+                .selectAll("text")
+                .attr("y", 0)
+                .attr("x", 9)
+                .attr("dy", ".35em")
+                .attr("transform", "rotate(90)")
+                .style("text-anchor", "start");
+
+            var activeFunc = function () {
+                svg.selectAll("rect")
+                .transition()
+                .delay(function (d, i) { return 50 * i })
+                .duration(1000)
+                .attr("fill-opacity", 1.0)
+                .attr("stroke", "black")
+                .attr("height", function (d, i) { return (height - margin.bottom) - scale(d[dataCol]); })
+                .attr("y", function (d, i) { return scale(+d[dataCol]); });
+            }
+
+            return activeFunc;
+        }
+
+        var csv_path = "phillipian_data.csv";
+        var per_article_csv_path = "phillipian_data_per_article.csv";
+        
+        // Array of functions to be called on the active event generated by graph-scroll
+        var activeFuncs = [];
+
+        d3.csv(csv_path, function (error, data) {
+
+            // Generate visualizations here
+            activeFuncs.push(generateBarChart("#container1", data, "Date", "Word Distribution", 0, data.length, "lightblue"));
+            //activeFuncs.push(generateBarChart("#container2", data, "Date", "Word Count", data.length, "#ffc77a"));
+
+            var nonFullMonths = ["Jun", "Jul", "Aug", "Nov", "Dec", "Mar"];
+            var filteredData = data.filter(function (d) {
+                return !nonFullMonths.contains(d.Date.split(',')[0]);
+            });
+
+            activeFuncs.push(generateBarChart("#container2", filteredData, "Date", "Word Distribution", 0, filteredData.length, "#a292fc"));
+            activeFuncs.push(generateBarChart("#container3", filteredData, "Date", "Word Count", 0, filteredData.length, "#ffc77a"));
+            activeFuncs.push(generateBarChart("#container4", filteredData, "Date", "Pair Variance", 0, filteredData.length, "#a8ffae"));
+            activeFuncs.push(generateBarChart("#container5", filteredData, "Date", "Word Variance", 0, filteredData.length, "#ffa8a8"));
+        });
+
+        d3.csv(per_article_csv_path, function (error, data) {
+            var nonFullMonths = ["Jun", "Jul", "Aug", "Nov", "Dec", "Mar"];
+            var filteredData = data.filter(function (d) {
+                return !nonFullMonths.contains(d.Date.split(',')[0]);
+            });
+
+            activeFuncs.push(generateBarChart("#container6", filteredData, "Date", "Word Variance", 0, 50, "#fff7a3"));
+            activeFuncs.push(generateBarChart("#container7", filteredData, "Date", "Word Variance", 145, 50, "#ffa319"));
+
+            // Set up graph scroll
+            d3.graphScroll()
+                .sections(d3.selectAll('#main-content > div.svgcontainer'))
+                .on('active', function (i) {
+                    activeFuncs[i]();
+                });
+        });
+    </script>
+</body>
+</html>
