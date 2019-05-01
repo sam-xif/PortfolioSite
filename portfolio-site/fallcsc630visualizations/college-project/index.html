@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Visualizations</title>
+	<link rel="stylesheet" type="text/css" href="ui.css" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    <style>
+body {
+	font-family: sans-serif;
+	padding:0px;
+	margin:0px;
+	background-color:#eeeeed;
+}
+
+#container {
+	width:100%;
+	margin:0px;
+	padding:0px;
+}
+
+header {
+    width: 100%;
+	margin: 0px auto;
+	padding: 20px 0px;
+	text-align: center;
+	background-color:#ffffff;
+}
+
+header h1, h2 {
+	display: inline;
+}
+
+main {
+	margin: 0px auto;
+	margin-top:20px;
+	background-color:#ffffff;
+    width:50%;
+    display:table;
+}
+
+main article {
+	padding: 20px;	
+}
+
+#vis-container {
+	border: 2px solid black;
+	background-color:#ffffff;
+	min-height:500px;
+	vertical-align: middle;
+	text-align:center;
+	padding:20px;
+}
+
+#description-container {
+	border: 2px solid black;
+	padding:0px 20px;
+	font-size: 17px;
+	margin: 10px 0px 0px 0px;
+}
+
+#vis-container img, svg {
+	display: inline;
+}
+    </style>
+</head>
+<body>
+	<div id="container">
+		<header>
+			<h1>Sam Xifaras's Visualizations</h1>
+			<br />
+			<h2>CSC-630</h2>
+		</header>
+		<main>
+            <div id="legend">
+                <strong>Legend</strong><br />
+                <span style="font-size:13px;">Click on a circle to see only schools from that country.</span>
+            </div>
+			<article>
+				<div id="vis-container">
+					<!-- visualization goes here -->
+				</div>
+				<div id="description-container">
+                    <div class="ui-container">
+                        <div class="ui-element">
+                            <span>X Axis Menu</span>
+                            <button id="dropdownButtonX" onclick="myFunction()" class="dropbtn color-1">Dropdown</button>
+                            <div id="dropdownX" class="dropdown-content">
+                            </div>
+                        </div>
+                        <div class="ui-element">
+                            <span>Y Axis Menu</span>
+                            <button id="dropdownButtonY" onclick="myFunction2()" class="dropbtn color-1">Dropdown</button>
+                            <div id="dropdownY" class="dropdown-content">
+                            </div>
+                        </div>
+                        <div class="ui-element">
+                            <span>Toggle Random or Top</span>
+                            <button id="toggle-random" onclick="toggleRandom()" class="dropbtn color-1">Show Random 200</button>
+                        </div>
+                    </div>
+                    <div class="ui-container">
+
+                        <div class="ui-element">
+                            <button id="invert-axes" onclick="invertAxes()" class="dropbtn color-1">Invert Axes</button>
+                        </div>
+                    </div>
+                    <p>
+
+                        <strong>Instructions</strong><br />
+                         Hover over any element to see the school and the country represented by the dot. Click on a circle in the legend to see only schools from that country.
+                        <ul>
+                            <li><strong>X Axis:</strong> Selects the column of the dataset which will be displayed on the X axis. </li>
+                            <li><strong>Y Axis:</strong> Selects the column of the Y axis</li>
+                            <li>
+                                <strong>Toggle Random or Top</strong> Switches between displaying a random subset of the data or taking from the top of the dataset.
+                                The data is ordered by ranking so the top would display the data of the top rankings schools.
+                            </li>
+                            <li><strong>Invert Axes:</strong> Switches the X and Y Axes of the graph</li>
+                        </ul>
+                    </p>
+                    <p>
+                        <strong>Bugs</strong><br />
+                        If you click the toggle button between random and top schools too much or too fast, it will sometimes cause most of the data to disappear.
+                        This may be because of the rule with transitions where there can only exist one named and one unnamed, or something.
+                        <br />
+                        The legend svg is also slightly buggy as well.
+                    </p>
+
+                 </div>
+			</article>
+		</main>
+	</div>
+    <script src="vis.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        function myFunction() {
+            document.getElementById("dropdownX").classList.toggle("show");
+        }
+
+        function myFunction2() {
+            document.getElementById("dropdownY").classList.toggle("show");
+        }
+        
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+    </script>
+</body>
+</html>

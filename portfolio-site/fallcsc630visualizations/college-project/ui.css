@@ -1,0 +1,97 @@
+
+/* Legend style */
+#legend {
+    position: fixed;
+    width: 10%;
+    left: 8%;
+    top: 160px;
+    display: block;
+    padding: 20px;
+    height:500px;
+    background-color:white;
+    border: 1px solid black;
+        overflow: scroll;
+}
+
+#legend-svg {
+    overflow:visible;
+}
+
+
+/* UI Container */
+.ui-container {
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    display: block;
+}
+
+.ui-container > div {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.ui-container span {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Color palettes for the buttons */
+.color-1 {
+    background-color: #4CAF50;
+}
+
+.color-1:hover, color-1:focus {
+    background-color: #3e8e41;
+}
+
+.color-2 {
+    background-color: #f4a742;
+}
+.color-2:hover {
+    background-color: #916327;
+}
+
+/****** w3schools Dropdown code ******/
+
+/* Dropdown Button */
+.dropbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.ui-element { /* Renamed from .dropdown to be more general */
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}

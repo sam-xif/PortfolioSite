@@ -20,6 +20,12 @@ In this project, I attempted to visualize the textual content of The Phillipian,
 
 ---
 
-### Lorem Ipsum
+### College Data Visualizer
 
-Dolor sit amet
+In this project, I created an interactive applet that allows the user to compare different statistics about colleges around the world from 2014 against each other.
+
+![College Data Preview](/img/visualization-img/college-project.png#vis-img)
+
+[View it here](/fallcsc630visualizations/college-project/index.html)
+
+---
