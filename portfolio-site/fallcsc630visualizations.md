@@ -29,3 +29,11 @@ In this project, I created an interactive applet that allows the user to compare
 [View it here](/fallcsc630visualizations/college-project/index.html)
 
 ---
+
+### World Happiness Map
+
+This project presents a rendering of the World Happiness Report of 2017 as a series of interactive maps, along with an analysis of each data field.
+
+![Happiness Map Preview](/img/visualization-img/maps-project.png#vis-img)
+
+[View it here](/fallcsc630visualizations/maps-project/index.html)

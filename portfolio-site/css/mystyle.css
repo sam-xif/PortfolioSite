@@ -3,10 +3,10 @@
  * Author: Sam Xifaras
  */
 
-
+/* Targets images on the visualizations page */
  img[src*="#vis-img"] {
    margin-left: auto;
    margin-right: auto;
    width: 80%;
-   border: 2px solid black;
+   border: 1px solid black;
  }
