@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>World Happiness Report</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+    body {
+        font-family: sans-serif;
+        font-size:14pt;
+    }
+    a {
+        text-decoration: none;
+    }
+    h1 {
+      font-weight: 200;
+    }
+    #header {
+        text-align: center;
+    }
+
+    blockquote {
+        font-size: 12pt;
+    }
+
+    .tip {
+        text-align:center;
+        margin:0px auto;
+    }
+
+    section {
+        width: 100%;
+        clear:both;
+        margin-bottom: 100px;
+    }
+
+    section > div.left {
+        width: 40%;
+        float: left;
+        margin: auto 0px;
+        top:25%;
+    }
+    
+    section > div.left p {
+    }
+
+    section > div.right {
+        width: 60%;
+        float: right;
+        text-align: center;
+        margin-bottom:100px;
+    }
+
+    .container {
+        margin: 0px auto;
+    }
+
+
+
+    svg {
+        border: 1px solid black;
+        margin:0px auto;
+        display:inline-block;
+    }
+
+    #content-wrapper {
+        width: 90%;
+        padding: 20px;
+        margin: 0px auto;
+    }
+
+    .sidebyside {
+
+    }
+
+    .sidebyside > .explain-text {
+        clear: both;
+        width: 100%;
+        padding: 0px 200px;
+    }
+
+    .sidebyside > .left {
+        float: left;
+        width: 50%;
+    }
+    .sidebyside > .right {
+        float: right;
+        width: 50%;
+    }
+    </style>
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+    <!-- Color scale library -->
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <!-- jQuery, used to get the width of the page s-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="content-wrapper">
+        <div id="header">
+            <h1>The 2017 World Happiness Report</h1>
+        </div>
+        <div class="explain-text">
+            <h3>What is the World Happiness Report?</h3>
+            The World Happiness Report is a collection of data from the Gallup World Poll that assesses the happiness levels of countries around the world. The poll uses the Cantril ladder, a happiness evaluation technique where participants are asked to imagine the worst possible life as a 0, the best possible life as a 10, and put their own life somewhere on that spectrum.
+            Here presented are some maps of the data contained within this report, and how it can be interpreted.
+            From the <a href="https://www.kaggle.com/unsdsn/world-happiness">Kaggle page</a>:
+            <blockquote cite="https://www.kaggle.com/unsdsn/world-happiness">
+                The happiness scores and rankings use data from the Gallup World Poll. The scores are based on answers to the main life evaluation question asked in the poll. This question, known as the Cantril ladder, asks respondents to think of a ladder with the best possible life for them being a 10 and the worst possible life being a 0 and to rate their own current lives on that scale. The scores are from nationally representative samples for the years 2013-2016 and use the Gallup weights to make the estimates representative. The columns following the happiness score estimate the extent to which each of six factors – economic production, social support, life expectancy, freedom, absence of corruption, and generosity – contribute to making life evaluations higher in each country than they are in Dystopia, a hypothetical country that has values equal to the world’s lowest national averages for each of the six factors. They have no impact on the total score reported for each country, but they do explain why some countries rank higher than others.
+            </blockquote>
+            Here are some example maps of the data contained within the World Happiness Report:
+        </div>
+        <div class="tip"><h3>Tip: Click on a country on any map to zoom in and see info on that country.</h3></div>
+        <div id="sections">
+            <section>
+                <div class="explain-text left">
+                    <h3>The Happiness Map</h3>
+                    <p>
+                        This first map shows the happiness score for each country around the world, which is the primary data column of the World Happiness Report. Darker blues indicate more happiness.
+                        The other columns of data in the World Happiness Report are not directly evaluated by the GWP, but they are statistically derived from other economic and social data about these countries. The purpose of these columns is to show the estimated amount of happiness explained by each of the indicators. 
+                        The next map shows one of these columns, Social Support.
+                    </p>
+                </div>
+                <div id="container1" class="container right"></div>
+            </section>
+            <section>
+                <div class="explain-text left">
+                    <h3>Social support</h3>
+                    <p>
+                        This map shows how much Social Support factors into the happiness scores. Again, Darker colors indicate a greater effect on the happiness score.
+                        The actual Social Support quantity as shown is divided by the total happiness score to scale it down, because having a higher happiness score results in having higher values in all the columns than countries with lower happiness scores.
+                        <br />
+                        The original data for Social Support came from the average of the binary response question on the GWP: “If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?” The World Happiness Report found the correlation between this value and the happiness score, and that is the source of the data in this column.
+                    </p>
+                </div>
+                
+                <div id="container2" class="container right"></div>
+            </section>
+            <section>
+                <div class="explain-text left">
+                    <h3>GDP per capita</h3>
+                    <p>
+                        This is the map of how much the GDP per capita contributes to the happiness score. Just like the Social Support map, the numbers shown on this map are the contribution of GDP per capita to the overall happiness score.
+                        Here is the explanation of the GDP per capita field from the <a href="http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/HR17-Ch2.pdf">World Happiness Report</a>:
+                        <blockquote cite="http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/HR17-Ch2.pdf">
+                            GDP per capita is in terms of Purchasing
+                            Power Parity (PPP) adjusted to constant 2011
+                            international dollars, taken from the World
+                            Development Indicators (WDI) released by
+                            the World Bank in August 2016. See the
+                            appendix for more details. GDP data for 2016
+                            are not yet available, so we extend the GDP
+                            time series from 2015 to 2016 using country-specific
+                            forecasts of real GDP growth from
+                            the OECD Economic Outlook No. 99 (Edition
+                            2016/1) and World Bank’s Global Economic
+                            Prospects (Last Updated: 01/06/2016), after
+                            adjustment for population growth. The equation
+                            uses the natural log of GDP per capita, as
+                            this form fits the data significantly better than
+                            GDP per capita.
+                        </blockquote>
+                    </p>
+                </div>
+                <div id="container3" class="container right"></div>
+            </section>
+            <section>
+                <div class="explain-text left">
+                    <h3>GDP per capita, part II</h3>
+                    <p>
+                        This is the map of the natural log of the current GDP per capita. The data here was obtained from <a href="tradingeconomics.com">tradingeconomics.com</a>, which has real-time indicators such as GDP, Jobless Rate, and others. I took the natural log of the GDP per Capita because that is what the World Happiness Report did. The data fit the natural log of GDP per Capita better than regular GDP per Capita.
+                        Note the apparent correlation between this map and the happiness score map (see Section 2 of the Jupyter notebook for some statistical analysis).
+                    </p>
+                </div>
+                <div id="container4" class="container right"></div>
+            </section>
+        </div>
+        <!--
+        <div class="sidebyside">
+            <div class="left">
+                <div id="container5"></div>
+            </div>
+            <div class="right">
+                <div id="container6"></div>
+            </div>
+        </div>
+            -->
+    </div>
+<script>
+// ******* Constants *******
+const margin = {
+    top: 100,
+    bottom: 100,
+    left: 100,
+    right: 50,
+};
+
+const width = ($(window).width() * 0.5);
+const height = 700;
+// Scales and Projections
+var scale = width / 6;
+var yoffset = 50;
+
+var projection = d3.geoRobinson().scale(scale).translate([width / 2, height / 2 + yoffset]);
+var path = d3.geoPath().projection(projection);
+
+var centered = {};
+
+function removeDataReadout(group) {
+    group.selectAll("text, rect").remove();
+}
+
+var happiness_csv = "world-happiness.csv";
+var econ_csv = "country_indicators.csv";
+
+
+// Load all the data and generate the maps
+d3.json("countries.geo.json", function (error1, geo) {
+    d3.csv(happiness_csv, function (error2, csv1) {
+        d3.csv(econ_csv, function (error3, csv2) {
+            generateMap("container1", "Happiness Score", csv1, geo, false, d3.interpolateBlues, 0);
+            generateMap("container2", "Social Support over Happiness", csv1, geo, false, d3.interpolatePurples, 0);
+            generateMap("container3", "Economy over Happiness", csv1, geo, false, d3.interpolateOranges, 0);
+            generateMap("container4", "log GDP per capita", csv2, geo, false, d3.interpolateReds, 0);
+        });
+    });
+});
+
+
+function generateDataReadout(row, colname, group) {
+    var duration = 300;
+    group.selectAll("text, rect").transition().duration(duration).attr("fill-opacity", 0.0).remove();
+    group.append("rect").attr("fill", "white")
+        .attr("x", 0).attr("y", 0).attr("width", width).attr("height", 80).attr("fill-opacity", 0.0).transition().duration(duration).attr("fill-opacity", 1.0);
+    group.append("text").text(row[2])
+        .attr("x", width / 2)
+        .attr("y", 30)
+        .attr("text-anchor", "middle")
+        .attr("font-weight", "bolder").attr("fill-opacity", 0.0).transition().duration(duration).attr("fill-opacity", 1.0);
+    if (!row[1]) {
+        group.append("text").text("No data")
+            .attr("x", width / 2)
+            .attr("y", 60)
+            .attr("text-anchor", "middle").attr("fill-opacity", 0.0).transition().duration(duration).attr("fill-opacity", 1.0);
+    }
+    else {
+        group.append("text").html(colname + ": " + row[1][colname]).attr("x", width / 2)
+            .attr("y", 60).attr("text-anchor", "middle").attr("fill-opacity", 0.0).transition().duration(duration).attr("fill-opacity", 1.0);
+    }
+}
+
+function generateMap(containerID, colname, csv, geo, inverted, colorFunc, padding) {
+    
+    // ******* Create SVG *******
+    var svg = d3.select("#" + containerID).append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("overflow", "hidden")
+        .style("margin", "0 auto")
+        .style("display", "block")
+
+    centered[containerID] = null;
+
+
+    function clicked(d, g, textgroup, containerID) {
+        var x, y, k;
+
+        var polygon = d[0];
+
+        if (polygon && centered[containerID] !== polygon) {
+            var centroid = path.centroid(polygon);
+            x = centroid[0];
+            y = centroid[1];
+            k = 4;
+            centered[containerID] = polygon;
+            generateDataReadout(d, colname, textgroup);
+        } else {
+            // Remove data readout
+            removeDataReadout(textgroup);
+
+            x = width / 2;
+            y = height / 2;
+            k = 1;
+            centered[containerID] = null;
+        }
+
+        g.selectAll("path")
+            .classed("active", centered[containerID] && function (polygon) { return polygon === centered[containerID]; });
+        g.transition()
+            .duration(750)
+            //translate(" + -width + "," + -height + ")
+            //translate(" + width / 2 + "," + height / 2 + ")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+            .style("stroke-width", 1.5 / k + "px");
+
+    }
+
+
+    var g = svg.append("g");
+    var textg = svg.append("g");
+
+    var extent = d3.extent(csv, function (d) { return +d[colname]; });
+    var scale = d3.scaleLinear().domain(extent).range([0, 1]);
+    var color = d3.scaleSequential(colorFunc);
+
+    var dataset = [];
+    for (var i = 0; i < geo.features.length; i++) {
+        var countryExistsInCSV = false;
+        for (var j = 0; j < csv.length; j++) {
+            if (geo.features[i].properties.name == csv[j].Country) {
+                var row = [geo.features[i].geometry, csv[j], geo.features[i].properties.name];
+                dataset.push(row);
+                countryExistsInCSV = true;
+            }
+        }
+        if (!countryExistsInCSV) {
+            dataset.push([geo.features[i].geometry, false, geo.features[i].properties.name]);
+        }
+    }
+
+    g.selectAll("path")
+        .data(dataset)
+        .enter()
+        .append("path")
+        .attr("d", function (d) { return path(d[0]); })
+        .attr("stroke-width", 1)
+        .attr("stroke", "black")
+        .attr("fill", function (d) { if (!d[1]) return "#c0c0c0"; else return color(scale(d[1][colname])); })
+        .on("click", function (d) { clicked(d, g, textg, containerID); })
+        .on("mouseover", function (d) {
+            var elem = d3.select(this);
+            elem.transition().duration(200).attr("fill", "white");
+        })
+        .on("mouseout", function (d) {
+            var elem = d3.select(this);
+            elem.transition().duration(200).attr("fill", function (d) { if (!d[1]) return "#c0c0c0"; else return color(scale(d[1][colname])); });
+        });
+}
+
+
+</script>
+</body>
+</html>
+
+
